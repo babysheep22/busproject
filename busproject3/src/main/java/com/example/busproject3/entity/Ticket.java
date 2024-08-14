@@ -22,7 +22,7 @@ public class Ticket {
     private Long arrDate;
 
     @Column
-    private Long
+    private
 
 
 
