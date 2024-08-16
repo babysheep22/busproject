@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tour Package</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+        }
+        header {
+            border-bottom: 2px solid;
+        }
+        footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+        }
+    </style>
+    <!-- Datepicker 라이브러리 추가 -->
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+</head>
+<body class="bg-gray-100">
+
+<!-- Header from newmain.html -->
+<header class="bg-blue-200 p-4">
+    <div class="container mx-auto flex justify-between items-center">
+        <div class="text-lg font-bold">BSBS - 부산 시외버스 관광도우미</div>
+        <nav class="space-x-4">
+            <a href="#" class="hover:underline">로그인</a>
+            <a href="#" class="hover:underline">회원가입</a>
+            <a href="#" class="hover:underline">위시리스트</a>
+            <a href="#" class="hover:underline">고객센터</a>
+        </nav>
+    </div>
+    <div class="container mx-auto mt-4">
+        <nav class="flex space-x-4">
+            <div class="dropdown relative">
+                <a href="#" class="hover:underline">빠른 여행지 추천</a>
+                <div class="dropdown-menu absolute hidden bg-white shadow-md mt-2 p-2 space-y-2">
+                    <a href="#" class="block hover:bg-gray-200 p-2">제주도</a>
+                    <a href="#" class="block hover:bg-gray-200 p-2">울릉도</a>
+                    <a href="#" class="block hover:bg-gray-200 p-2">강원</a>
+                    <a href="#" class="block hover:bg-gray-200 p-2">경상</a>
+                    <a href="#" class="block hover:bg-gray-200 p-2">전라</a>
+                    <a href="#" class="block hover:bg-gray-200 p-2">충청</a>
+                    <a href="#" class="block hover:bg-gray-200 p-2">서울/인천/경기</a>
+                </div>
+            </div>
+            <a href="#" class="hover:underline">이벤트</a>
+            <a href="#" class="hover:underline">고객센터</a>
+            <a href="#" class="hover:underline">공지사항</a>
+        </nav>
+    </div>
+</header>
+
+<!-- 메인 부분 흰색 배경으로 변경 -->
+<div class="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-lg mt-8">
+    <div class="flex">
+        <img src="img/item01.jpg" alt="Tour Image" class="w-1/2 rounded-lg">
+        <div class="ml-6">
+            <h1 class="text-2xl font-bold mb-2">[거제][시외버스][1박 2일]관광 상품 이름111</h1>
+            <p class="text-gray-600 mb-4">상품 소개 문구2222</p>
+            <div class="text-xl font-bold mb-2">성인1인</div>
+            <div class="text-2xl font-bold text-gray-800">40,000원</div>
+        </div>
+    </div>
+    <div class="mt-6">
+        <h2 class="text-xl font-bold mb-2">상품가격</h2>
+        <table class="w-full text-left border-collapse">
+            <thead>
+            <tr>
+                <th class="border-b p-2">구분</th>
+                <th class="border-b p-2">성인</th>
+                <th class="border-b p-2">아동</th>
+                <th class="border-b p-2">유아</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td class="border-b p-2">기본상품</td>
+                <td class="border-b p-2">164,000원</td>
+                <td class="border-b p-2">144,000원</td>
+                <td class="border-b p-2">문의</td>
+            </tr>
+            </tbody>
+        </table>
+        <p class="text-gray-600 mt-2">* 아동, 유아의 경우 관련 증빙 서류를 제출해야 하며, 미제출시 성인요금이 적용됩니다.</p>
+    </div>
+    <div class="mt-6 flex justify-between items-center">
+        <div>
+            <h2 class="text-xl font-bold mb-2">상품 정보</h2>
+            <p class="text-gray-600">주요 관광지 정보</p>
+            <p class="text-gray-600">와현 모래숲 해수욕장 , 거제 고현시장 , 지세포 라벤더공원 , 거제 조선해양박물관 , 옥화 마을 , 구조라 해수욕장</p>
+            <p class="text-gray-600 mt-2">버스 노선 정보</p>
+        </div>
+        <div class="bg-gray-100 p-4 rounded-lg shadow-lg">
+            <h2 class="text-xl font-bold mb-2">인원선택</h2>
+            <div class="flex items-center mb-2">
+                <span class="w-20">성인</span>
+                <button class="bg-gray-300 px-2 py-1 rounded" onclick="decreaseCount('adult')">-</button>
+                <span class="mx-2" id="adultCount">1</span>
+                <button class="bg-gray-300 px-2 py-1 rounded" onclick="increaseCount('adult')">+</button>
+                <span class="ml-4">40,000원</span>
+            </div>
+            <div class="flex items-center mb-2">
+                <span class="w-20">아동</span>
+                <button class="bg-gray-300 px-2 py-1 rounded" onclick="decreaseCount('child')">-</button>
+                <span class="mx-2" id="childCount">1</span>
+                <button class="bg-gray-300 px-2 py-1 rounded" onclick="increaseCount('child')">+</button>
+                <span class="ml-4">20,000원</span>
+            </div>
+            <div class="text-xl font-bold mt-4">총금액</div>
+            <div class="text-2xl font-bold text-gray-800" id="totalAmount">110,000원</div>
+            <button class="bg-blue-500 text-white px-4 py-2 rounded mt-4">예약하기</button>
+        </div>
+    </div>
+</div>
+
+<!-- Footer from newmain.html -->
+<footer class="bg-gray-300 p-4">
+    <div class="container mx-auto text-center">
+        footer
+    </div>
+</footer>
+
+<!-- JavaScript 추가 -->
+<script>
+    function increaseCount(type) {
+        const countElement = document.getElementById(type + 'Count');
+        let count = parseInt(countElement.textContent);
+        count++;
+        countElement.textContent = count;
+        updateTotalAmount();
+    }
+
+    function decreaseCount(type) {
+        const countElement = document.getElementById(type + 'Count');
+        let count = parseInt(countElement.textContent);
+        if (count > 0) {
+            count--;
+            countElement.textContent = count;
+            updateTotalAmount();
+        }
+    }
+
+    function updateTotalAmount() {
+        const adultCount = parseInt(document.getElementById('adultCount').textContent);
+        const childCount = parseInt(document.getElementById('childCount').textContent);
+        const totalAmount = (adultCount * 40000) + (childCount * 20000);
+        document.getElementById('totalAmount').textContent = totalAmount.toLocaleString() + '원';
+    }
+</script>
+</body>
+</html>

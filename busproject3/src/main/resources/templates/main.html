@@ -1,160 +1,192 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bus Reservation</title>
+    <title>부산 시외버스 관광</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: 'Roboto', sans-serif;
-            background: url(img/main_bg.gif) center 0 no-repeat;
-            background-size: cover;
+            font-family: 'Noto Sans KR', sans-serif;
         }
-        .active-tab {
-            color: blue;
+        .dropdown:hover .dropdown-menu {
+            display: block;
+            width: 600px;
+            z-index: 10;
         }
+        .carousel img {
+            width: 100%;
+            height: auto;
+        }
+        header {
+            border-bottom: 2px solid;
+        }
+        .relative {
+            position: relative;
+        }
+        .absolute {
+            position: absolute;
+        }
+
         .modal {
             display: none;
-            position: fixed;
-            z-index: 50;
+            position: absolute;
+            top: 100%;
             left: 0;
-            top: 0;
             width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0, 0, 0, 0.4);
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 50;
         }
+
         .modal-content {
-            background-color: #fefefe;
-            margin: 15% auto;
             padding: 20px;
-            border: 1px solid #888;
-            width: 400px;
-            border-radius: 8px;
+            border-radius: 5px;
+            width: 100%;
+            max-width: 800px;
+        }
+
+        footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
         }
     </style>
+
     <!-- Datepicker 라이브러리 추가 -->
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 </head>
-<body>
-<div class="flex">
-    <!-- Sidebar -->
-    <div class="w-1/5 bg-white shadow-md h-screen p-4">
-        <div class="flex items-center mb-6">
-            <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"></path>
-            </svg>
-            <span class="font-bold">고속버스 예매 사이트</span>
-        </div>
-        <ul>
-            <li class="mb-4"><a href="#" class="text-blue-500">고속버스 예매</a></li>
-            <li class="mb-4"><a href="#">예매 확인</a></li>
-            <li class="mb-4"><a href="#">운행 정보</a></li>
-            <li class="mb-4"><a href="#">고객센터</a></li>
-            <li><a href="#">공지사항</a></li>
-        </ul>
+<body class="bg-gray-100">
+<header class="bg-blue-200 p-4">
+    <div class="container mx-auto flex justify-between items-center">
+        <div class="text-lg font-bold">BSBS - 부산 시외버스 관광도우미</div>
+        <nav class="space-x-4">
+            <a href="#" class="hover:underline">로그인</a>
+            <a href="#" class="hover:underline">회원가입</a>
+            <a href="#" class="hover:underline">위시리스트</a>
+            <a href="#" class="hover:underline">고객센터</a>
+        </nav>
     </div>
-    <!-- Main Content -->
-    <div class="w-4/5 p-8">
-        <!-- Header -->
-        <div class="flex justify-end space-x-4 mb-8">
-            <button class="px-4 py-2 bg-orange-500 text-white rounded" id="loginBtn">로그인</button>
-            <button class="px-4 py-2 bg-orange-500 text-white rounded"><a href="/join">회원가입</a></button>
-            <button class="px-4 py-2 bg-orange-500 text-white rounded"><a href="">마이페이지</a></button>
-            <button class="px-4 py-2 bg-orange-500 text-white rounded"><a href="">결제내역</a></button>
-        </div>
-        <!-- Login Modal -->
-        <div id="loginModal" class="modal">
-            <div class="modal-content">
-                <h2 class="text-xl font-bold mb-4">Login</h2>
-                <form id="login-form" role="form" method="post" action="/members/login">
-                    <div class="form-group mb-4">
-                        <input type="text" name="email" placeholder="Email" class="w-full px-4 py-2 border rounded">
-                    </div>
-                    <div class="form-group mb-4">
-                        <input type="password" name="password" placeholder="Password" class="w-full px-4 py-2 border rounded">
-                    </div>
-                    <p th:if="${loginErrorMsg}" class="error text-red-500 mb-4" th:text="${loginErrorMsg}"></p>
-                    <input type="submit" value="Login" class="w-full bg-blue-500 text-white py-2 rounded cursor-pointer">
-                    <a href="/members/new" class="block text-center mt-4 text-gray-700">회원가입</a>
-                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
-                </form>
-            </div>
-        </div>
-        <!-- Tabs -->
-        <div class="flex space-x-8 mb-8">
-            <button class="px-4 py-2 bg-blue-500 text-white rounded">고속버스 예매</button>
-            <button class="px-4 py-2 bg-gray-200 rounded">예매 확인</button>
-            <button class="px-4 py-2 bg-gray-200 rounded">도착시간 안내</button>
-        </div>
-        <!-- Form -->
-        <div class="bg-white p-8 shadow-md rounded">
-            <div class="grid grid-cols-3 gap-4 mb-4">
-                <div>
-                    <label for="departure" class="block mb-2">출발지</label>
-                    <button id="departure" class="w-full px-4 py-2 border rounded">선택</button>
-                </div>
-                <div>
-                    <label for="arrival" class="block mb-2">도착지</label>
-                    <button id="arrival" class="w-full px-4 py-2 border rounded">선택</button>
-                </div>
-                <div>
-                    <label for="date" class="block mb-2">가는날</label>
-                    <div class="flex items-center">
-                        <input type="text" id="date" class="w-full px-4 py-2 border rounded" value="2024. 7. 30 수" readonly>
-                        <button id="datepicker-btn" class="ml-2 px-4 py-2 bg-gray-200 rounded">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 4h10M5 11h14M5 15h14M5 19h14"></path>
-                            </svg>
-                        </button>
-                    </div>
+    <div class="container mx-auto mt-4">
+        <nav class="flex space-x-4">
+            <div class="dropdown relative">
+                <a href="#" class="hover:underline">빠른 여행지 추천</a>
+                <div class="dropdown-menu absolute hidden bg-white shadow-md mt-2 p-2 space-y-2">
+                    <a href="#" class="block hover:bg-gray-200 p-2">제주도</a>
+                    <a href="#" class="block hover:bg-gray-200 p-2">울릉도</a>
+                    <a href="#" class="block hover:bg-gray-200 p-2">강원</a>
+                    <a href="#" class="block hover:bg-gray-200 p-2">경상</a>
+                    <a href="#" class="block hover:bg-gray-200 p-2">전라</a>
+                    <a href="#" class="block hover:bg-gray-200 p-2">충청</a>
+                    <a href="#" class="block hover:bg-gray-200 p-2">서울/인천/경기</a>
                 </div>
             </div>
-            <div class="mb-4">
-                <label class="block mb-2">좌석 등급</label>
-                <div class="flex space-x-4">
-                    <button class="px-4 py-2 border rounded active-tab">전체</button>
-                    <button class="px-4 py-2 border rounded">프리미엄</button>
-                    <button class="px-4 py-2 border rounded">우등</button>
-                    <button class="px-4 py-2 border rounded">일반</button>
+            <a href="#" class="hover:underline">이벤트</a>
+            <a href="#" class="hover:underline">고객센터</a>
+            <a href="#" class="hover:underline">공지사항</a>
+        </nav>
+    </div>
+</header>
+<main class="container mx-auto mt-8 flex space-x-8">
+    <div class="bg-white p-6 shadow-md w-1/3">
+        <div class="mb-4 relative">
+            <label for="destination" class="block text-gray-700">어디로 가시나요?</label>
+            <input type="text" id="destination" class="w-full border border-gray-300 p-2 mt-2" readonly>
+            <div class="modal" id="modal">
+                <div class="modal-content">
+                    <h2 class="text-lg font-bold mb-4">주요도시</h2>
+                    <table class="w-full">
+                        <tr>
+                            <td class="text-purple-500">국내</td>
+                            <td>
+                                <a href="#" class="block py-2 destination-option">제주도</a>
+                                <a href="#" class="block py-2 destination-option">울릉도</a>
+                                <a href="#" class="block py-2 destination-option">강원</a>
+                                <a href="#" class="block py-2 destination-option">경상</a>
+                                <a href="#" class="block py-2 destination-option">전라</a>
+                                <a href="#" class="block py-2 destination-option">충청</a>
+                                <a href="#" class="block py-2 destination-option">서울/인천/경기</a>
+                            </td>
+                        </tr>
+                    </table>
+                    <button id="close-modal" class="mt-4 px-4 py-2 bg-gray-300 rounded">닫기</button>
                 </div>
             </div>
-            <button class="w-full px-4 py-2 bg-blue-500 text-white rounded">조회하기</button>
+        </div>
+        <div class="mb-4">
+            <label for="date" class="block text-gray-700">가는날</label>
+            <div class="relative">
+                <input type="text" id="date" class="w-full px-4 py-2 border rounded" readonly>
+                <button id="datepicker-btn" class="ml-2 px-4 py-2 bg-gray-200 rounded">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 4h10M5 11h14M5 15h14M5 19h14"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <button class="w-full bg-blue-500 text-white p-2 mt-4">조회하기
+
+        </button>
+    </div>
+    <div class="w-2/3">
+        <div class="carousel relative">
+            <img src="/img/배경이미지1.png" alt="홍보용 이미지1" class="rounded-md shadow-md">
+            <div class="absolute bottom-2 right-2 bg-white p-2 rounded-md shadow-md">1/5</div>
+            <div class="absolute left-2 top-1/2 transform -translate-y-1/2 bg-white p-2 rounded-md shadow-md cursor-pointer">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                </svg>
+            </div>
+            <div class="absolute right-2 top-1/2 transform -translate-y-1/2 bg-white p-2 rounded-md shadow-md cursor-pointer">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                </svg>
+            </div>
         </div>
     </div>
-</div>
+</main>
+<footer class="bg-gray-300 p-4">
+    <div class="container mx-auto text-center">
+        footer
+    </div>
+</footer>
 
 <script>
-    // 모달 제어
-    var modal = document.getElementById("loginModal");
-    var btn = document.getElementById("loginBtn");
-
-    btn.onclick = function() {
-        modal.style.display = "block";
-    }
-
-    window.onclick = function(event) {
-        if (event.target == modal) {
-            modal.style.display = "none";
-        }
-    }
-
-    // Datepicker 제어
+    // Datepicker 제어 및 오늘 날짜 기본 설정
     $(function() {
+        var today = new Date();
+        var formattedDate = today.getFullYear() + '. ' + ('0' + (today.getMonth() + 1)).slice(-2) + '. ' + ('0' + today.getDate()).slice(-2) + ' ' + ['일', '월', '화', '수', '목', '금', '토'][today.getDay()];
+        $("#date").val(formattedDate);
+
         $("#datepicker-btn").click(function() {
             $("#date").datepicker({
                 dateFormat: 'yy/mm/dd',
                 onSelect: function(dateText) {
                     var date = new Date(dateText);
-                    var formattedDate = date.getFullYear() + '년 ' + ('0' + (date.getMonth() + 1)).slice(-2) + '월 ' + ('0' + date.getDate()).slice(-2) + '일';
+                    var formattedDate = date.getFullYear() + '. ' + ('0' + (date.getMonth() + 1)).slice(-2) + '. ' + ('0' + date.getDate()).slice(-2) + ' ' + ['일', '월', '화', '수', '목', '금', '토'][date.getDay()];
                     $("#date").val(formattedDate);
                     $("#date").data('value', dateText.replace(/\//g, ''));
                 }
             }).datepicker("show");
+        });
+
+        // 모달 제어
+        $("#destination").click(function() {
+            $("#modal").fadeIn();
+        });
+
+        $("#close-modal").click(function() {
+            $("#modal").fadeOut();
+        });
+
+        $(".destination-option").click(function() {
+            var selectedDestination = $(this).text();
+            $("#destination").val(selectedDestination);
+            $("#modal").fadeOut();
         });
     });
 </script>

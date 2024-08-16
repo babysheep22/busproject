@@ -1,5 +1,6 @@
 package com.example.busproject3.entity;
 
+import com.example.busproject3.constant.OrderStatus;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -15,6 +16,11 @@ public class Order {
     private Member member;
 
     private LocalDateTime orderDate;
+
+    public void addOrderItem(OrderItem orderItem){
+        orderItems.add(orderItem);
+        orderItem.setOrder(this);
+    }
 
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
