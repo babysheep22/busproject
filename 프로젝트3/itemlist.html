@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Travel Packages</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-900">
+
+    <!-- Header from newmain.html -->
+    <header class="bg-blue-200 p-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <div class="text-lg font-bold">BSBS - 부산 시외버스 관광도우미</div>
+            <nav class="space-x-4">
+                <a href="#" class="hover:underline">로그인</a>
+                <a href="#" class="hover:underline">회원가입</a>
+                <a href="#" class="hover:underline">위시리스트</a>
+                <a href="#" class="hover:underline">고객센터</a>
+            </nav>
+        </div>
+        <div class="container mx-auto mt-4">
+            <nav class="flex space-x-4">
+                <div class="dropdown relative">
+                    <a href="#" class="hover:underline">빠른 여행지 추천</a>
+                    <div class="dropdown-menu absolute hidden bg-white shadow-md mt-2 p-2 space-y-2">
+                        <a href="#" class="block hover:bg-gray-200 p-2">제주도</a>
+                        <a href="#" class="block hover:bg-gray-200 p-2">울릉도</a>  
+                        <a href="#" class="block hover:bg-gray-200 p-2">강원</a>
+                        <a href="#" class="block hover:bg-gray-200 p-2">경상</a>
+                        <a href="#" class="block hover:bg-gray-200 p-2">전라</a>
+                        <a href="#" class="block hover:bg-gray-200 p-2">충청</a>
+                        <a href="#" class="block hover:bg-gray-200 p-2">서울/인천/경기</a>
+                    </div>
+                </div>
+                <a href="#" class="hover:underline">이벤트</a>
+                <a href="#" class="hover:underline">고객센터</a>
+                <a href="#" class="hover:underline">공지사항</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container mx-auto p-4">
+        <div class="bg-white p-4 rounded-lg shadow-md">
+            <h1 class="text-2xl font-bold mb-4">경상</h1>
+            <div class="flex items-center mb-4">
+                <label for="departure-date" class="mr-2">출발일</label>
+                <input type="text" id="departure-date" class="border border-gray-300 rounded p-2" placeholder="20nn.nn.nn">
+            </div>
+            <div class="flex space-x-4 mb-4">
+                <button class="px-4 py-2 bg-blue-500 text-white rounded">추천순</button>
+                <button class="px-4 py-2 bg-gray-200 text-gray-700 rounded">예약순</button>
+                <button class="px-4 py-2 bg-gray-200 text-gray-700 rounded">평점순</button>
+                <button class="px-4 py-2 bg-gray-200 text-gray-700 rounded">높은가격순</button>
+                <button class="px-4 py-2 bg-gray-200 text-gray-700 rounded">낮은가격순</button>
+            </div>
+            <div class="space-y-4">
+                <div class="bg-white p-4 rounded-lg shadow-md flex">
+                    <img src="https://via.placeholder.com/100" alt="Travel Image" class="w-24 h-24 rounded mr-4">
+                    <div>
+                        <h2 class="text-xl font-bold">
+                            <a href="itemdetail.html" class="hover:underline">[거제][시외버스][1박2일]관광 상품 이름 1111</a>
+                        </h2>
+                        <p class="text-gray-700">대한민국 해파랑길 최북단 끝자락 고성으로 떠나는 여행으로, 관광팔경의 으뜸인 청간정과 은빛 모래와 작은 바위가 어우러진 아야진해변, 국가지질공원 능파대, 그리고 고성 최고의 풍경 화진포와 김일성별장을 감상해보세요.</p>
+                        <p class="text-xl font-bold text-right">40,000원</p>
+                    </div>
+                </div>
+                <div class="bg-white p-4 rounded-lg shadow-md flex">
+                    <img src="https://via.placeholder.com/100" alt="Travel Image" class="w-24 h-24 rounded mr-4">
+                    <div>
+                        <h2 class="text-xl font-bold">[거제][시외버스][2박3일]관광 상품 이름 2222</h2>
+                        <p class="text-gray-700">대한민국 해파랑길 최북단 끝자락 고성으로 떠나는 여행으로, 관광팔경의 으뜸인 청간정과 은빛 모래와 작은 바위가 어우러진 아야진해변, 국가지질공원 능파대, 그리고 고성 최고의 풍경 화진포와 김일성별장을 감상해보세요.</p>
+                        <p class="text-xl font-bold text-right">90,000원</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer from newmain.html -->
+    <footer class="bg-gray-300 p-4">
+        <div class="container mx-auto text-center">
+            footer
+        </div>
+    </footer>
+
+    <script>
+        // Datepicker 제어 및 오늘 날짜 기본 설정
+        $(function() {
+            var today = new Date();
+            var formattedDate = today.getFullYear() + '. ' + ('0' + (today.getMonth() + 1)).slice(-2) + '. ' + ('0' + today.getDate()).slice(-2) + ' ' + ['일', '월', '화', '수', '목', '금', '토'][today.getDay()];
+            $("#date").val(formattedDate);
+
+            $("#datepicker-btn").click(function() {
+                $("#date").datepicker({
+                    dateFormat: 'yy/mm/dd',
+                    onSelect: function(dateText) {
+                        var date = new Date(dateText);
+                        var formattedDate = date.getFullYear() + '. ' + ('0' + (date.getMonth() + 1)).slice(-2) + '. ' + ('0' + date.getDate()).slice(-2) + ' ' + ['일', '월', '화', '수', '목', '금', '토'][date.getDay()];
+                        $("#date").val(formattedDate);
+                        $("#date").data('value', dateText.replace(/\//g, ''));
+                    }
+                }).datepicker("show");
+            });
+
+            // 모달 제어
+            $("#destination").click(function() {
+                $("#modal").fadeIn();
+            });
+
+            $("#close-modal").click(function() {
+                $("#modal").fadeOut();
+            });
+
+            $(".destination-option").click(function() {
+                var selectedDestination = $(this).text();
+                $("#destination").val(selectedDestination);
+                $("#modal").fadeOut();
+            });
+        });
+    </script>
+
+</body>
+</html>
