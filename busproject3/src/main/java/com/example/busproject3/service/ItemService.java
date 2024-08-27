@@ -1,19 +1,24 @@
 package com.example.busproject3.service;
-
-
-import com.example.busproject3.dto.ItemFormDto;
-import com.example.busproject3.entity.Item;
-import com.example.busproject3.entity.ItemImg;
-import com.example.busproject3.repository.ItemImgRepository;
-import com.example.busproject3.repository.ItemRepository;
-import jakarta.persistence.EntityNotFoundException;
+import com.example. busproject3.dto.ItemFormDto;
+import com.example. busproject3.entity.Item;
+import com.example. busproject3.entity.ItemImg;
+import com.example. busproject3.repository.ItemImgRepository;
+import com.example. busproject3.repository.ItemRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
 import java.util.List;
+
+import com.example. busproject3.dto.ItemImgDto;
+import jakarta.persistence.EntityNotFoundException;
+import java.util.ArrayList;
+
+import com.example. busproject3.dto.ItemSearchDto;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 
 @Service
 @Transactional
@@ -25,6 +30,9 @@ public class ItemService {
     private final ItemImgService itemImgService;
 
     private final ItemImgRepository itemImgRepository;
+
+
+
 
     public Long saveItem(ItemFormDto itemFormDto, List<MultipartFile> itemImgFileList) throws Exception{
 
@@ -79,6 +87,7 @@ public class ItemService {
         return item.getId();
     }
 
+
     // 삭제
     public void deleteItem(Long ItemId){
         Item item = itemRepository.findById(ItemId)
@@ -88,5 +97,27 @@ public class ItemService {
         itemRepository.delete(item);
     }
 
+    @Transactional(readOnly = true)
+    public Page<Item> getAdminItemPage(ItemSearchDto itemSearchDto, Pageable pageable){
+        return itemRepository.getAdminItemPage(itemSearchDto, pageable);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<MainItemDto> getMainItemPage(ItemSearchDto itemSearchDto, Pageable pageable){
+        return itemRepository.getMainItemPage(itemSearchDto, pageable);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<MainItemDto> getItemsByCategory(ItemSearchDto itemSearchDto, Pageable pageable) {
+        return itemRepository.getMainItemPage(itemSearchDto, pageable);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<MainItemDto> getItemsByItemId(ItemSearchDto itemSearchDto, Pageable pageable){
+        return itemRepository.getMainItemPage(itemSearchDto, pageable);
+    }
 
 }
+
+
+
